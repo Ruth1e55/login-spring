@@ -9,7 +9,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    <h1 th:inline="text">Hello [[${#request.userPrincipal.principal.fullName}]]!</h1>
     <h2>This is your Dashboard</h2>
 </div>
 

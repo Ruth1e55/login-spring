@@ -21,7 +21,8 @@ public class AuthController {
         return modelAndView;
     }
 
-//    public ModelAndView google(){
+//    @RequestMapping(value = "/googleLogin",method = RequestMethod.GET)
+//    public ModelAndView googleLogin(){
 //        ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.setViewName("google");
 //        return modelAndView;

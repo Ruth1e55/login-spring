@@ -6,6 +6,7 @@ import regis.login.domain.User;
 public interface UserRepository extends MongoRepository<User, String> {
 
     User findByEmail(String email);
+    User findByFullname(String fullName);
 
 
 }

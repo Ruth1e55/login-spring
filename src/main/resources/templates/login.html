@@ -10,15 +10,13 @@
 <body class="text-center">
 
 <div layout:fragment="content">
-    <form th:action="" method="post">
-    <button type="submit" class="login-with-google-btn" style="margin-bottom: 25px">
-        Sign in with Google
-    </button>
-    </form>
-    <form class="form-signin" th:action="@{/login}" method="post">
+<!--    <form th:action="@{/oauth2/authorization/google}" method="GET">-->
+<!--    <button type="submit" class="login-with-google-btn" style="margin-bottom: 25px">Sign in with Google-->
 
-<!--        <div class="g-signin2" data-onsuccess="onSignIn"></div>-->
-
+       <h4><a th:href="@{/oauth2/authorization/google}" class="login-with-google-btn" style="margin-bottom: 25px">Sign in with Google</a></h4>
+<!--    </button>-->
+<!--    </form>-->
+    <form class ="form-signin" th:action="@{/login}" method="post">
         <h4 class="h4 mb-4 font-weight-normal" style="margin-bottom: 25px">Or</h4>
         <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
         <div th:if="${param.error}">
