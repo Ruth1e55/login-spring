@@ -33,6 +33,11 @@ public class CustomOAuth2User implements OAuth2User{
         return oAuth2User.getAttribute("name");
     }
 
+    public String getPicture(){
+        return oAuth2User.getAttribute("picture");
+    }
+    public String getEmail(){return oAuth2User.getAttribute("email");}
+
     public String getFullName() {
         return oAuth2User.getAttribute("name");
     }

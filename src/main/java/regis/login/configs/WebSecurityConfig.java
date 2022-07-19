@@ -64,20 +64,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/dashboard/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
                 .loginPage("/login")
-//                .failureUrl("/login?error=true")
+                .failureUrl("/login?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
                 .and()
-                .oauth2Login().loginPage("/login").userInfoEndpoint().userService(oAuth2UserService)
-                .and()
+                .oauth2Login().loginPage("/login")
+                .defaultSuccessUrl("/loginSuccess")
+                .failureUrl("/loginFailure")
                 .successHandler((request, response, authentication) -> {
                     CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-                    userService.processOAuthPostLogin(oAuth2User.getFullName());
+                    userService.processOAuthPostLogin(oAuth2User.getFullName(),oAuth2User.getEmail(),oAuth2User.getPicture());
                     response.sendRedirect("/googleLogin");
-                });
+                })
+                .userInfoEndpoint().userService(oAuth2UserService);
     }
 
     @Override
