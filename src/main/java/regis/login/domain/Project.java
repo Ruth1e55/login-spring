@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Document(collection = "project")
 public class Project {
@@ -63,9 +64,16 @@ public class Project {
         return projectCode;
     }
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
+    static String usingUUID() {
+        UUID randomUUID = UUID.randomUUID();
+        return randomUUID.toString().replaceAll("-", "");
     }
+    public void setProjectCode() {
+        String randomString = usingUUID();
+        randomString = randomString.substring(0, 6);
+        this.projectCode = randomString;
+    }
+
 
     private int totalHrs;
 

@@ -16,6 +16,7 @@ import regis.login.services.CustomUserDetailsService;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 
 @Controller
 public class AuthController {
@@ -58,17 +59,19 @@ public class AuthController {
 //    }
 
     @PostMapping(value = "/dashboard")
-    public String project(@RequestParam String projectTitle, @RequestParam String projectDesc, @RequestParam String addedBy, @RequestParam Date startDate, @RequestParam Date endDate, @RequestParam String projectCode){
+    public String project(@RequestParam String projectTitle, @RequestParam String projectDesc, @RequestParam String addedBy, @RequestParam Date startDate, @RequestParam Date endDate){
         Project project = new Project();
         project.setProjectTitle(projectTitle);
         project.setProjectDesc(projectDesc);
-        project.setProjectCode(projectCode);
+        project.setProjectCode();
         project.setAddedBy(addedBy);
         project.setStartDate(startDate);
         project.setEndDate(endDate);
 
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("project",projectRepository.findById(projectTitle));
         projectRepository.save(project);
-
+//        return modelAndView;
         return "redirect:/dashboard";
     }
 
