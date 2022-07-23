@@ -4,34 +4,28 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Document(collection = "project")
 public class Project {
-
-    @Id
-    private String id;
-
     @Indexed(unique = true, direction= IndexDirection.DESCENDING, dropDups = true)
 
+    @Id
+//    private String id;
     private String projectTitle;
+
+    private String projectDesc;
 
     private String addedBy;
 
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date startDate;
-
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date endDate;
 
     private String projectCode;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getProjectTitle() {
         return projectTitle;
@@ -72,6 +66,22 @@ public class Project {
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
     }
-//    private int totalHrs;
 
+    private int totalHrs;
+
+    public int getTotalHrs() {
+        return totalHrs;
+    }
+
+    public void setTotalHrs(int totalHrs) {
+        this.totalHrs = totalHrs;
+    }
+
+    public String getProjectDesc() {
+        return this.projectDesc;
+    }
+
+    public void setProjectDesc(String projectDesc) {
+            this.projectDesc = projectDesc;
+    }
 }

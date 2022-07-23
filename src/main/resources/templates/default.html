@@ -14,41 +14,30 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <a class="navbar-brand" href="/">Spring Boot</a>
+    <a class="navbar-brand" th:if="${#httpServletRequest.remoteUser == null}" href="/">Spring Boot</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item active" th:if="${#httpServletRequest.remoteUser == null}">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item" th:if="${#httpServletRequest.remoteUser == null}"><a class="nav-link" th:href="@{/login}">Log in</a></li>
             <li class="nav-item" th:if="${#httpServletRequest.remoteUser}">
-<!--                <a class="nav-link" th:text="${#request.userPrincipal.principal.fullName}"></a>-->
+                <a class="nav-link" th:text="${#httpServletRequest.remoteUser}"></a>
+            </li>
+            <li class="nav-item" th:if="${#httpServletRequest.remoteUser}">
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out"/>
                 </form>
             </li>
         </ul>
-<!--        <ul class="navbar-nav ml-auto">-->
-<!--            <li class="nav-item"><a class="nav-link" th:href="@{/login}">Log in</a></li>-->
-<!--        </ul>-->
     </div>
 
-<!--    <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--        <ul class="navbar-nav mr-auto">-->
-<!--            <li class="nav-item active">-->
-<!--                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--        <ul class="navbar-nav ml-auto">-->
-<!--            <li class="nav-item"><a class="nav-link" th:href="@{/login}">Log in</a></li>-->
-<!--        </ul>-->
-<!--    </div>-->
 </nav>
 
 <div class="container">

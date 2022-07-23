@@ -9,50 +9,126 @@
 </head>
 <body>
 
-<div th:if="${#httpServletRequest.remoteUser}" layout:fragment="content">
-
-    <h1 th:inline="text">Hello [[${#request.userPrincipal.principal.fullName}]]!</h1>
-    <h2>This is your Dashboard</h2>
-    <button type="button" class="btn btn-success">Add Project</button>
-</div>
-<div th:if="${#httpServletRequest.remoteUser}" layout:fragment="content">
-    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-    <h2>This is your Dashboard</h2>
-    <button type="button" class="btn btn-success">Add Project</button>
-</div>
-
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
-
-<!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="exampleModalLabel">New Project</h5>-->
-<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">&times;</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <form>-->
-<!--                    <div class="form-group">-->
-<!--                        <label for="recipient-name" class="col-form-label">Recipient:</label>-->
-<!--                        <input type="text" class="form-control" id="recipient-name">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <label for="message-text" class="col-form-label">Message:</label>-->
-<!--                        <textarea class="form-control" id="message-text"></textarea>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-<!--                <button type="button" class="btn btn-primary">Send message</button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+<!--<div th:if="${#httpServletRequest.remoteUser}" layout:fragment="content">-->
+<!--    <h1 th:inline="text">Hello [[${#request.userPrincipal.principal.fullName}]]!</h1>-->
 <!--</div>-->
+
+<div th:if="${#httpServletRequest.remoteUser}" layout:fragment="content">
+
+    <!--    example Text   -->
+
+<!--    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
+<!--    <h2>This is your Dashboard</h2>-->
+
+    <!--    example Text   -->
+
+    <div>
+        <button type="button" class="btn btn-success" style="position:absolute; top:65px; right:20px;" data-toggle="modal" data-target="#projectForm" data-whatever="">Add Project</button>
+    </div>
+
+    <!--    Dashboard table   -->
+
+    <div class="row" style="position: fixed; top:90px; left:70px; width: 100%">
+        <div class="col-xs-8 col-md-8">
+            <h2>Project List</h2>
+            <div class="table-responsive-lg" >
+                <table class="table table-hover table-bordered table-dark table-striped" id="project-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">added By</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Project Code</th>
+                        <th scope="col">Total Hours</th>
+                        <th scope="col" th:name="functions">Functions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="project : ${projects}">
+                        <td th:text="${project.projectTitle}"></td>
+                        <td th:text="${project.projectDesc}"></td>
+                        <td th:text="${project.addedBy}"></td>
+                        <td th:text="${project.startDate}"></td>
+                        <td th:text="${project.endDate}"></td>
+                        <td th:text="${project.projectCode}"></td>
+                        <!--                        <td th:text="${project.totalHours}"></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--    Dashboard table   -->
+
+    <!--  Project Form MODAL  -->
+
+    <div class="modal fade" id="projectForm" tabindex="-1" role="dialog" aria-labelledby="projectFormLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="projectFormLabel">New Project</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                                        <form th:action="@{/dashboard}" method="post">
+<!--                    <form>-->
+                        <div class="form-group">
+                            <label for="project-title" class="col-form-label">Project Title:</label>
+                            <input type="text" class="form-control" id="project-title" name="projectTitle" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-description" class="col-form-label">Project Description</label>
+                            <textarea class="form-control" id="project-description" rows="3" name="projectDesc"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-startDate" class="col-form-label">Start Date:</label>
+                            <input type="date" class="form-control" id="project-startDate" name="startDate" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-endDate" class="col-form-label">End Date:</label>
+                            <input type="date" class="form-control" id="project-endDate" name="endDate" required="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="project-code" class="col-form-label">Project Code:</label>
+                            <input type="text" class="form-control" id="project-code" name="projectCode" required="">
+                        </div>
+                        <div class="form-group">
+                            <label for="project-addedBy" class="col-form-label">Added By:</label>
+                            <input type="text" class="form-control" id="project-addedBy" name="addedBy" th:value="${#httpServletRequest.remoteUser}" required="">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create Project</button>
+<!--                            <button type="button" class="btn btn-primary">Create Project</button>-->
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--  Project Form MODAL  -->
+
+</div>
+
 
 </body>
 </html>

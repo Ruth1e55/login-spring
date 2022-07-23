@@ -61,7 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
-                .antMatchers("/dashboard/**").hasAuthority("ADMIN").anyRequest()
+                .antMatchers("/dashboard/**")
+//                .hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin().successHandler(customizeAuthenticationSuccessHandler)
                 .loginPage("/login")
                 .failureUrl("/login?error=true")
@@ -70,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").and().exceptionHandling()
+//                .accessDeniedPage("/accessDenied")
                 .and()
                 .oauth2Login().loginPage("/login")
                 .defaultSuccessUrl("/loginSuccess")
@@ -77,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((request, response, authentication) -> {
                     CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
                     userService.processOAuthPostLogin(oAuth2User.getFullName(),oAuth2User.getEmail(),oAuth2User.getPicture());
-                    response.sendRedirect("/googleLogin");
+                    response.sendRedirect("/dashboard");
                 })
                 .userInfoEndpoint().userService(oAuth2UserService);
     }
