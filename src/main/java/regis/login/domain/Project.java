@@ -14,7 +14,6 @@ public class Project {
     @Indexed(unique = true, direction= IndexDirection.DESCENDING, dropDups = true)
 
     @Id
-//    private String id;
     private String projectTitle;
 
     private String projectDesc;
@@ -73,8 +72,6 @@ public class Project {
         randomString = randomString.substring(0, 6);
         this.projectCode = randomString;
     }
-
-
     private int totalHrs;
 
     public int getTotalHrs() {
@@ -91,5 +88,14 @@ public class Project {
 
     public void setProjectDesc(String projectDesc) {
             this.projectDesc = projectDesc;
+    }
+
+    private String companyTitle;
+
+    public void setCompanyTitle(String company) {
+        this.companyTitle = company;
+    }
+    public String getCompanyTitle() {
+        return companyTitle;
     }
 }

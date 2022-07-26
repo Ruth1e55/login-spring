@@ -26,6 +26,10 @@
         <button type="button" class="btn btn-success" style="position:absolute; top:65px; right:20px;" data-toggle="modal" data-target="#projectForm" data-whatever="">Add Project</button>
     </div>
 
+    <div>
+        <button type="button" class="btn btn-info" style="position:absolute; top:65px; right:140px;" data-toggle="modal" data-target="#companyForm" data-whatever="">Add Company</button>
+    </div>
+
     <!--    Dashboard table   -->
 
     <div class="row" style="position: fixed; top:90px; left:70px; width: 100%">
@@ -37,6 +41,7 @@
                     <tr>
                         <th scope="col">Title</th>
                         <th scope="col">Description</th>
+                        <th scope="col">Company Name</th>
                         <th scope="col">added By</th>
                         <th scope="col">Start Date</th>
                         <th scope="col">End Date</th>
@@ -49,13 +54,20 @@
                     <tr th:each="project : ${projects}">
                         <td th:text="${project.projectTitle}"></td>
                         <td th:text="${project.projectDesc}"></td>
+                        <td th:text="${project.getCompanyTitle()}"></td>
                         <td th:text="${project.addedBy}"></td>
                         <td th:text="${project.startDate}"></td>
                         <td th:text="${project.endDate}"></td>
                         <td th:text="${project.projectCode}"></td>
                                                 <td></td>
                         <td>
-                            <button type="button" class="btn btn-danger" style="margin: 6px;"  th:name="projectTitle">Delete Project</button>
+<!--                            <form th:action="|@{/deleteProject/${project.projectTitle}}|" method="post">-->
+<!--                                <input type="hidden" name="id" th:value="${project.projectTitle}" />-->
+<!--                                <input type="submit" value="Delete" class="btn btn-danger" />-->
+<!--                                <button type="submit" class="btn btn-danger" style="margin: 6px;"  name="deleteProject">Delete Project</button>-->
+<!--                            </form>-->
+                            <a th:href="@{deleteProject/__${project.projectTitle}__}" class="btn btn-danger" style="margin: 6px;">Delete Project</a>
+
                             <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateProjectForm" name="" style="margin: 6px;">Modify Project</button>
                         </td>
 
@@ -66,16 +78,14 @@
         </div>
     </div>
 
-    <!--    Dashboard table   -->
+    <!--    Company Modal   -->
 
-    <!-- Update Project Form MODAL  -->
-
-    <div class="modal fade" id="updateProjectForm" tabindex="-1" role="dialog" aria-labelledby="projectFormLabel" aria-hidden="true">
+    <div class="modal fade" id="companyForm" tabindex="-1" role="dialog" aria-labelledby="projectFormLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
 
-                    <h5 class="modal-title" id="updateProjectFormLabel">Update Project</h5>
+                    <h5 class="modal-title" id="companyFormLabel">New Company</h5>
 
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -85,50 +95,92 @@
 
                 <div class="modal-body">
 
-                    <form th:action="@{/dashboard}" method="PUT">
-                        <!--                 <form>-->
-                        <div class="form-group">
-                            <label for="project-title" class="col-form-label">Project Title:</label>
-                            <input type="text" class="form-control" name="projectTitle" th:value="" required="">
-                        </div>
+                    <!--             <form>              -->
+                    <form th:action="@{/company}" method="post">
 
                         <div class="form-group">
-                            <label for="project-description" class="col-form-label">Project Description</label>
-                            <textarea class="form-control" rows="3" name="projectDesc"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="project-startDate" class="col-form-label">Start Date:</label>
-                            <input type="date" class="form-control"  name="startDate" required="">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="project-endDate" class="col-form-label">End Date:</label>
-                            <input type="date" class="form-control" name="endDate"  required="">
-                        </div>
-
-<!--                        <div class="form-group">-->
-<!--                            <label for="project-code" class="col-form-label">Project Code:</label>-->
-<!--                            <input type="text" class="form-control" name="projectCode" required="">-->
-<!--                        </div>-->
-                        <div class="form-group">
-                            <label for="project-addedBy" class="col-form-label">Added By:</label>
-                            <input type="text" class="form-control" name="addedBy" th:value="${#httpServletRequest.remoteUser}" required="">
+                            <label for="company-title" class="col-form-label">Company Name:</label>
+                            <input type="text" class="form-control" id="company-title" name="companyTitle" required="">
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create Project</button>
-                            <!--                            <button type="button" class="btn btn-primary">Create Project</button>-->
+                            <button type="submit" class="btn btn-primary">Create Company</button>
                         </div>
-
                     </form>
+                    <!--             <form>              -->
 
                 </div>
             </div>
 
         </div>
     </div>
+
+    <!--    Company Modal   -->
+
+    <!--    Dashboard table   -->
+
+    <!-- Update Project Form MODAL  -->
+
+<!--    <div class="modal fade" id="updateProjectForm" tabindex="-1" role="dialog" aria-labelledby="projectFormLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog" role="document">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+
+<!--                    <h5 class="modal-title" id="updateProjectFormLabel">Update Project</h5>-->
+
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+
+<!--                </div>-->
+
+<!--                <div class="modal-body">-->
+
+<!--                    <form th:action="@{/dashboard}" method="PUT">-->
+<!--                        &lt;!&ndash;                 <form>&ndash;&gt;-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="project-title" class="col-form-label">Project Title:</label>-->
+<!--                            <input type="text" class="form-control" name="projectTitle" th:value="" required="">-->
+<!--                        </div>-->
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="project-description" class="col-form-label">Project Description</label>-->
+<!--                            <textarea class="form-control" rows="3" name="projectDesc"></textarea>-->
+<!--                        </div>-->
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="project-startDate" class="col-form-label">Start Date:</label>-->
+<!--                            <input type="date" class="form-control"  name="startDate" required="">-->
+<!--                        </div>-->
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="project-endDate" class="col-form-label">End Date:</label>-->
+<!--                            <input type="date" class="form-control" name="endDate"  required="">-->
+<!--                        </div>-->
+
+<!--&lt;!&ndash;                        <div class="form-group">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <label for="project-code" class="col-form-label">Project Code:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <input type="text" class="form-control" name="projectCode" required="">&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="project-addedBy" class="col-form-label">Added By:</label>-->
+<!--                            <input type="text" class="form-control" name="addedBy" th:value="${#httpServletRequest.remoteUser}" required="">-->
+<!--                        </div>-->
+
+<!--                        <div class="modal-footer">-->
+<!--                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                            <button type="submit" class="btn btn-primary">Create Project</button>-->
+<!--                            &lt;!&ndash;                            <button type="button" class="btn btn-primary">Create Project</button>&ndash;&gt;-->
+<!--                        </div>-->
+
+<!--                    </form>-->
+
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
 
     <!-- Update Project Form MODAL  -->
 
@@ -149,8 +201,9 @@
 
                 <div class="modal-body">
 
+                    <!--        <form>       -->
                                         <form th:action="@{/dashboard}" method="post">
-<!--                    <form>-->
+
                         <div class="form-group">
                             <label for="project-title" class="col-form-label">Project Title:</label>
                             <input type="text" class="form-control" id="project-title" name="projectTitle" required="">
@@ -160,6 +213,13 @@
                             <label for="project-description" class="col-form-label">Project Description</label>
                             <textarea class="form-control" id="project-description" rows="3" name="projectDesc"></textarea>
                         </div>
+
+                         <div class="form-group">
+                             <select id="companyTitle" name="companyTitle" class="form-select">
+                                 <option value="0" selected>Select a Company</option>
+                                 <option th:each="company : ${companies}" th:value="${company.getCompany()}" th:text="${company.getCompany()}"></option>
+                             </select>
+                         </div>
 
                         <div class="form-group">
                             <label for="project-startDate" class="col-form-label">Start Date:</label>
@@ -187,6 +247,7 @@
                         </div>
 
                     </form>
+                    <!--        <form>       -->
 
                 </div>
             </div>

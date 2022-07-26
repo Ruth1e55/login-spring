@@ -3,13 +3,16 @@ package regis.login.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+import regis.login.domain.Company;
 import regis.login.domain.Project;
 import regis.login.domain.User;
+import regis.login.repository.CompanyRepository;
 import regis.login.repository.ProjectRepository;
 import regis.login.services.CustomUserDetailsService;
 
@@ -27,11 +30,14 @@ public class AuthController {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
     public ModelAndView login(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;
     }
+
 
 //    @RequestMapping(value = "/googleLogin",method = RequestMethod.GET)
 //    public ModelAndView googleLogin(){
@@ -59,7 +65,7 @@ public class AuthController {
 //    }
 
     @PostMapping(value = "/dashboard")
-    public String project(@RequestParam String projectTitle, @RequestParam String projectDesc, @RequestParam String addedBy, @RequestParam Date startDate, @RequestParam Date endDate){
+    public String project(@RequestParam String projectTitle, @RequestParam String projectDesc, @RequestParam String addedBy, @RequestParam Date startDate, @RequestParam Date endDate, @RequestParam String companyTitle){
         Project project = new Project();
         project.setProjectTitle(projectTitle);
         project.setProjectDesc(projectDesc);
@@ -67,11 +73,33 @@ public class AuthController {
         project.setAddedBy(addedBy);
         project.setStartDate(startDate);
         project.setEndDate(endDate);
+        project.setCompanyTitle(companyTitle);
 
 //        ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.addObject("project",projectRepository.findById(projectTitle));
         projectRepository.save(project);
 //        return modelAndView;
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping(value = "/company")
+    public String company(@RequestParam String companyTitle){
+        Company company = new Company();
+        company.setCompany(companyTitle);
+        companyRepository.save(company);
+        return "redirect:/dashboard";
+    }
+
+//    @PostMapping(value = "/deleteProject/{projectTitle}")
+//    public String deleteProject(@PathVariable Project projectTitle){
+//
+//        return "redirect:/dashboard";
+//    }
+
+    @RequestMapping(value = "/deleteProject/{id}")
+    private String deleteProject(@PathVariable(name = "id") Project id){
+        System.out.println("Project : "+id);
+        projectRepository.delete(id);
         return "redirect:/dashboard";
     }
 
@@ -85,6 +113,7 @@ public class AuthController {
     public ModelAndView getDashboard(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("projects",projectRepository.findAll());
+        modelAndView.addObject("companies",companyRepository.findAll());
         modelAndView.setViewName("dashboard");
         return modelAndView;
     }
