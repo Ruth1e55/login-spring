@@ -1,0 +1,14 @@
+version: "3"
+services:
+  trackprodb:
+    image: mongo:latest
+    container_name: "trackprodb"
+    ports:
+      - 27017:27017
+  trackpro:
+    image: trackpro:1.0
+    container_name: trackpro
+    ports:
+      - 8080:8080
+    links:
+      - trackprodb
